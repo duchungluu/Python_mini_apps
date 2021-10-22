@@ -1,0 +1,26 @@
+import requests, tkinter
+from tkinter.ttk import *
+
+
+## function that gets the random quote
+def get_random_quote():
+    ## making the get request
+    response = requests.get("https://quote-garden.herokuapp.com/api/v3/quotes/random")
+    if response.status_code == 200:
+        ## extracting the core data
+        json_data = response.json()
+        data = json_data['data']
+        ## getting the quote from the data
+        quote = data[0]['quoteText']
+        return quote
+            
+win = tkinter.Tk()
+win.title(get_random_quote())
+
+aLable = Label(win, text=get_random_quote())
+aLable.grid(column=0, row=0, padx=8, pady=4)
+
+action = Button(win, text="Refresh", command=get_random_quote)
+action.grid(column=2, row=2, padx=8, pady=4)
+
+win.mainloop()
